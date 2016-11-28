@@ -1,0 +1,56 @@
+[difftool "kdiff3"]
+	path=/usr/local/bin/kdiff3
+	trustExitCode=false
+[difftool]
+	prompt=false
+[diff]
+	tool = kdiff3
+
+[mergetool "kdiff3"]
+	path=/usr/local/bin/kdiff3
+	trustExitCode=false
+[mergetool]
+	keepBackup=false
+[merge]
+	tool = kdiff3
+
+[alias]
+  lg1 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%cr)%C(reset) %C(white)%s%C(reset) %C(bold white)— %cn%C(reset)%C(bold yellow)%d%C(reset)' --abbrev-commit --date=relative
+  lg2 = log --graph --all --format=format:'%C(bold blue)%h%C(reset) - %C(bold cyan)%cD%C(reset) %C(bold green)(%cr)%C(reset)%C(bold yellow)%d%C(reset)%n''          %C(white)%s%C(reset) %C(bold white)— %cn%C(reset)' --abbrev-commit
+  lg = !"git lg1"
+	dname = diff --name-only origin
+	undo-commit = reset HEAD~1
+	oldiff = diff --name-status
+  st = status
+  ci = commit
+  br = branch
+  co = checkout
+  df = diff
+  dc = diff --cached
+  lg = log -p
+  lol = log --graph --decorate --pretty=oneline --abbrev-commit
+  lola = log --graph --decorate --pretty=oneline --abbrev-commit --all
+  ls = ls-files
+	logsinglefile = log --follow
+  hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	type = cat-file -t
+  dump = cat-file -p
+	test = "!gi() { curl -s http://www.gitignore.io/api/$@ ;}; gi"
+	spush = push --recurse-submodules=on-demand
+	supdate = submodule update --remote --merge
+
+[color]
+	ui = auto
+[color "branch"]
+	current = yellow reverse
+	local = yellow
+	remote = green
+[color "diff"]
+	meta = yellow bold
+	frag = magenta bold
+	old = red bold
+	new = green bold
+[color "status"]
+	added = yellow
+	changed = green
+	untracked = cyan

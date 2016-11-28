@@ -1,0 +1,22 @@
+#!/bin/bash
+#
+# Checks if currently focused windows is a terminal, and if not, closes it.
+# Otherwise, does nothing
+
+if ! hash xprop 2>/dev/null || ! hash wmctrl 2>/dev/null; then
+  echo
+  echo "Error: xprop and wmctrl must be installed"
+  echo
+  exit 1
+fi
+
+# extract the _NET_ACTIVE_WINDOW. return the XID of the window with cut
+ACT_WIN=$(xprop -root 32x '\t$0' _NET_ACTIVE_WINDOW | cut -f 2)
+
+# pass the XID to xprop to get the window WM_CLASS
+# with awk we get a string like '"class_name",', so we use tr to remove " and ,
+WIN_CLASS=$(xprop -id $ACT_WIN WM_CLASS | awk '{print $3}' | tr -d \",)
+
+if [[ "$WIN_CLASS" != "urxvt" ]]; then # close non-urxvt window
+  wmctrl -i -c "$ACT_WIN"
+fi

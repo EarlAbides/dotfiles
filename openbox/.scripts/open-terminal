@@ -1,0 +1,10 @@
+#!/bin/bash
+#
+# If the script to open urxvt exists, call it
+
+if [[ -f ~/.scripts/urxvtopen ]]; then
+  ~/.scripts/urxvtopen
+else
+  xterm
+fi
+

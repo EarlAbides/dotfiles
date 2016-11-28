@@ -1,0 +1,191 @@
+if v:version >= 700
+  try
+    """""""""""""""""""""""""""""""
+    " Vundle
+    """""""""""""""""""""""""""""""
+    set nocompatible " required
+    filetype off " required
+    
+    " set the runtime path to include Vundle and initialize
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
+    
+    " let Vundle manage Vundle, required
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'scrooloose/nerdtree'
+    Plugin 'jistr/vim-nerdtree-tabs'
+    Plugin 'Xuyuanp/nerdtree-git-plugin'
+    "Plugin 'vim-latex/vim-latex'
+    Plugin 'ctrlpvim/ctrlp.vim'
+    Plugin 'airblade/vim-gitgutter'
+    Plugin 'rust-lang/rust.vim'
+    Plugin 'cespare/vim-toml'
+    Plugin 'vim-airline/vim-airline'
+    Plugin 'vim-airline/vim-airline-themes'
+    " All of your Plugins must be added before the following line
+    call vundle#end()            " required
+  catch
+  endtry
+endif
+filetype plugin indent on    " required
+
+"""""""""""""""""""""""""""""""
+" Custom
+"""""""""""""""""""""""""""""""
+" show utf-8 characters
+set encoding=utf-8
+" show invisible characters
+" show tab as →, new line as ¬
+set list
+set listchars=tab:→\ ,eol:¬,
+
+" show italics in vim terminal
+" https://www.reddit.com/r/vim/comments/24g8r8/italics_in_terminal_vim_and_tmux/
+set t_ZH=[3m
+set t_ZR=[23m
+
+colorscheme badwolf
+
+set number " line number
+
+set laststatus=2 " show status line
+set cursorline " highlight current line
+
+set autoindent
+set smartindent
+set ruler " always show current position
+syntax enable
+
+" insert space characters whenever tab is pressed
+set expandtab
+" number of visual spaces per tab
+set tabstop=2
+" number of spaces in tab when editing
+set softtabstop=2
+set shiftwidth=2
+
+set wildmenu " visual autocomplete for command menu
+
+set wrap " wrap visually. for specific file wrapping, see .vim/ftplugin
+" default behavior: don't wrap automatically by setting textwidth to 0. in
+" .vim/ftplugin, alter this value if you want automatic wrapping for tex, C,
+" Java, etc..
+set textwidth=0
+set linebreak " wrap at a character in the breakat option (spaces, tabs, ., ;,)
+"" prevent vim from automatically inserting line breaks in newly entered text
+set wrapmargin=0
+set formatoptions+=l
+
+" Set to auto read when a file is changed from the outside
+set autoread
+
+set showmatch " highlight matching [{()}]
+set gfn=DejaVu\ Sans\ Mono\ 10
+
+" enable mouse
+set mouse=a
+set showcmd " Show (partial) command in status line
+
+set hlsearch " highlight search results
+
+" keys delay?? https://news.ycombinator.com/item?id=4246452
+set timeout timeoutlen=1000 ttimeoutlen=100
+
+" unicode
+" http://vim.wikia.com/wiki/Working_with_Unicode
+if has("multi_byte")
+  if &termencoding == ""
+    let &termencoding = &encoding
+  endif
+  set encoding=utf-8
+  setglobal fileencoding=utf-8
+  "setglobal bomb
+  set fileencodings=ucs-bom,utf-8,latin1
+endif
+
+set backupdir=/tmp
+set directory=/tmp
+
+" remove ~/.vim/.netrwhist
+au VimLeave * if filereadable("~/.vim/.netrwhist")|call delete("~/.vim//.netrwhist")|endif 
+
+" dont't tab complete these extensions
+set wildignore=*.o,*.obj,*~,*.pyc
+set wildignore+=.tmp
+set wildignore+=*DS_Store*
+set wildignore+=.git,.svn,.hg
+set wildignore+=__pycache__/
+set wildignore+=.idea/**
+set wildignore+=.vagrant/*
+set wildignore+=*.png,*.jpg,*.gif,*.bmp,*.ico
+set wildignore+=*.so,*.swp,*.zip,*/.Trash/**,*.pdf,*.dmg,*/Library/**,*/.rbenv/**
+
+" Autojump to the last edited position when a file is reopened
+" from http://stackoverflow.com/a/6496995
+au BufReadPost * call AutoJumpToLastPosition()
+
+fun! AutoJumpToLastPosition()
+  " ignore on these filetypes
+  if &ft =~ 'gitcommit'
+    return
+  endif
+  if line("'\"") > 0 && line("'\"") <= line("$") | exe "normal g'\"" | endif
+endfun
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Mappings
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" On insert mode, Shift-Tab to unindent
+inoremap <S-Tab> <C-D>
+" On visual mode, use tab and shift tab to indent the current selected text
+vnoremap <Tab> >gv
+vnoremap <S-Tab> <gv
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" vim-latex
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Check .vim/ftplugin for some file type definitions
+"
+" IMPORTANT: grep will sometimes skip displaying the file name if you
+" search in a singe file. This will confuse Latex-Suite. Set your grep
+" program to always generate a file-name.
+set grepprg=grep\ -nH\ $*
+
+" OPTIONAL: Starting with Vim 7, the filetype of empty .tex files defaults to
+" 'plaintex' instead of 'tex', which results in vim-latex not being loaded.
+" The following changes the default filetype back to 'tex':
+let g:tex_flavor='latex'
+
+" TIP: if you write your \label's as \label{fig:something}, then if you
+" type in \ref{fig: and press <C-n> you will automatically cycle through
+" all the figure labels. Very useful
+set iskeyword+=:
+
+" use Ctrl+N and Ctrl+P in insert mode
+set complete+=kspell
+
+let g:Tex_DefaultTargetFormat = 'pdf'
+
+"http://vim-latex.sourceforge.net/documentation/latex-suite.html#Tex_MultipleCompileFormats
+let g:Tex_MultipleCompileFormats='dvi,pdf'
+
+let g:Tex_UseMakefile=1
+
+" I don't like to execute zathura this way, because all stdout/stderr is dumped
+" into vim.. So I use g:Tex_ViewRuleComplete_<format>. I could also use xdg-open
+" instead of zathura, but well..
+let g:Tex_ViewRule_dvi='zathura'
+let g:Tex_ViewRule_pdf='zathura'
+let g:Tex_ViewRule_ps ='zathura'
+" http://vim-latex.sourceforge.net/documentation/latex-suite.html#Tex_ViewRuleComplete_format
+let g:Tex_ViewRuleComplete_pdf='zathura $*.pdf &>/dev/null &'
+let g:Tex_ViewRuleComplete_ps ='zathura $*.ps  &>/dev/null &'
+let g:Tex_ViewRuleComplete_dvi='zathura $*.dvi &>/dev/null &'
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" plugin configurations: check `plugin/<plugin name>.vim`or `after/plugin/<plugin name>.vim`
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" set custom filetypes
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" see .vim/filetype.vim

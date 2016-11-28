@@ -1,0 +1,7 @@
+#!/bin/sh
+
+# lightdm session file
+SESSION=$(grep "Session" ~/.dmrc | sed 's/Session=//')
+
+# execute programs at startup
+[ -f ~/.scripts/startup ] && (sleep 1s && ~/.scripts/startup $SESSION) &

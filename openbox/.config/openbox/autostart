@@ -1,0 +1,40 @@
+#
+# These things are run when an Openbox X Session is started.
+#
+
+[ -f ~/.config/openbox/setlayout ] && (~/.config/openbox/setlayout 0 2 2 0) &
+
+# this will also start xfce4-panel
+xfce4-session &
+
+# dropbox. this is the first because the tray icon gets messed up if others are started before
+# dropbox &
+# gradually remove dropbox and replace with something else
+# hash syncthing-gtk && syncthing-gtk &
+
+# volume
+hash volumeicon 2>/dev/null && volumeicon &
+
+# battery
+#cbatticon -i symbolic -l 10 -r 5 -c "systemctl hibernate" &
+
+hash copyq 2>/dev/null && copyq &
+
+# composite
+hash compton && 2>/dev/null && (compton --config ~/.config/compton.conf -b) &
+
+# wait some seconds for connman daemon to start..
+(sleep 5s && cmst -m -w 1) &
+
+# "desktop" backgroud
+[ -f ~/Pictures/bg.jpg ] && (feh --image-bg black --bg-fill --no-fehbg ~/Pictures/bg.jpg) &
+
+# volume notification daemon
+if hash volnoti 2>/dev/null; then
+  if [ -z `pidof volnoti` ]; then
+    (sleep 2s && volnoti -t 1) &
+  fi
+fi
+
+# rest reminder
+# hash workrave && 2>/dev/null && (workrave) &

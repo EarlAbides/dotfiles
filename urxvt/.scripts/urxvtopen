@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# If a terminal is already open, focus on it. If not, execute a new one.
+# ONLY works if tmux is running
+#
+
+
+TERM_NAME=urxvt
+TERM_CLASS=URxvt
+
+if ! hash wmctrl 2>/dev/null; then
+  echo
+  echo "Error: wmctrl is not installed!"
+  echo
+  urxvt
+else
+  # find all windows with urxvt (title, name, class). this might contain a
+  # browser window that contains urxvt in the title
+  OPEN_TERMS=$(wmctrl -lx | grep $TERM_NAME)
+  
+  IS_OPEN="no" # default action, execute new TERM_CMD
+  # check if an instance of urxvt is indeed open
+  while read -r line; do
+    NAME_CLASS=$(echo $line | awk '{print $3}') # urxvt => urxvt.URxvt
+    if [[ "$NAME_CLASS" == "$TERM_NAME.$TERM_CLASS" ]]; then # focus on current TERM_NAME
+      IS_OPEN="yes"
+    fi
+  done <<< "$OPEN_TERMS"
+  
+  if [[ "$IS_OPEN" == "no" ]]; then # execute new TERM_CMD
+    if [[ ! -z `pidof urxvtd` ]]; then # execute urxvt client
+      urxvtc &
+    else
+      urxvt &
+    fi
+  else # focus on currently open TERM_NAME
+    wmctrl -xa $TERM_NAME
+  fi
+fi
