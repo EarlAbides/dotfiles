@@ -7,19 +7,58 @@ URxvt*depth: 32
 ! Compile xft: Turn on/off double-buffering for xft (default
 ! URxvt*buffered: boolean
 
-! Create the window with the specified X window geometry [default
-URxvt*geometry: 126x30
+URxvt.scrollBar: false
+!URxvt.letterSpace: -1
+URxvt.saveLines: 1000000
+URxvt.cursorBlink: 1
 
+URxvt.geometry: 120X30
+
+! Cursor
+urxvt*cursorColor: #DCDCCC
+! URLs
+urxvt*.colorUL:    #ffffff
+!
+
+! Zenburn color-scheme
 ! Use the specified colour as the windows background colour [default
-URxvt*background: black
-
+! Pseudo Transparency
+!urxvt*shading:    50
+!urxvt*transparent:true
+! Real transparency
+urxvt*depth: 32
+urxvt*background: rgba:0000/0000/0200/c800
 ! Use the specified colour as the windows foreground colour [default
-URxvt*foreground: white
+urxvt*foreground:  #dcdccc
 
 ! Use the specified colour for the colour value n, where 0-7
-! URxvt*colorn: colour
+! black + red
+!urxvt*color0:     #3f3f3f
+urxvt*color0:      #1E2320
+urxvt*color1:      #705050
+! green + yellow
+urxvt*color2:      #60b48a
+urxvt*color3:      #dfaf8f
+! blue + purple
+urxvt*color4:      #506070
+urxvt*color5:      #dc8cc3
+! cyan + white
+urxvt*color6:      #8cd0d3
+urxvt*color7:      #dcdccc
+! bright-black + bright-red
+urxvt*color8:      #709080
+urxvt*color9:      #dca3a3
+! bright-green + bright-yellow
+urxvt*color10:     #c3bf9f
+urxvt*color11:     #f0dfaf
+! bright-blue + bright-purple
+urxvt*color12:     #94bff3
+urxvt*color13:     #ec93d3
+! bright-cyan + bright-white
+urxvt*color14:     #93e0e3
+urxvt*color15:     #ffffff
 
-! 
+!
 ! URxvt*colorBD: colour
 
 ! Use the specified colour to display bold or italic characters when
@@ -112,7 +151,7 @@ URxvt*title: urxvt
 ! URxvt*print-pipe: string
 
 ! Set scrollbar style to rxvt, plain, next or xterm. plain is the
-URxvt*scrollstyle: plain
+! URxvt*scrollstyle: plain
 
 ! Set the scrollbar width in pixels.
 URxvt*thickness: 10
@@ -195,7 +234,7 @@ URxvt*termName: rxvt-unicode-256color
 ! The characters used as delimiters for double-click word selection
 ! URxvt*cutchars: string
 
-! 
+!
 ! URxvt*{|}
 
 ! OverTheSpot, OffTheSpot, Root; option -pt.
@@ -284,5 +323,5 @@ URxvt*.transparent: false
 
 ! Clickable URLs
 URxvt.matcher.button: 1
-! URL color 
+! URL color
 URxvt.matcher.rend.0: Uline Bold fg5
