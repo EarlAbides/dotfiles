@@ -109,8 +109,8 @@ export PATH=$PATH:$HOME/bin:/usr/local/bin
 # ********************************************************************
 
 # rbenv setup
-export PATH=$HOME/.rbenv/bin:$PATH
-eval "$(rbenv init -)"
+# export PATH=$HOME/.rbenv/bin:$PATH
+# eval "$(rbenv init -)"
 
 # Set golang path
 export GOPATH=$HOME/Projects/go
