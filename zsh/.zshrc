@@ -116,6 +116,9 @@ export PATH=$PATH:$HOME/bin:/usr/local/bin
 export GOPATH=$HOME/Projects/go
 export PATH="$PATH:$GOPATH/bin"
 
+# Add Anaconda path
+export PATH="/Users/jearl/anaconda3/bin:$PATH"
+
 # Some docker helper functions
 # source ~/.docker-functions
 
