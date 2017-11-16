@@ -1,11 +1,6 @@
 # If not running interactively, don't do anything
 [[ "$-" != *i* ]] && return
 
-# Source Amazon keys if they exist
-if [[ -f $HOME/.awskeys ]]; then
-	. $HOME/.awskeys
-fi
-
 zstyle ':completion:*' verbose yes
 zstyle ':completion:*:descriptions' format '%B%d%b'
 zstyle ':completion:*:messages' format '%d'
@@ -118,6 +113,17 @@ export PATH="$PATH:$GOPATH/bin"
 
 # Add Anaconda path
 export PATH="/Users/jearl/anaconda3/bin:$PATH"
+
+# Source Amazon keys if they exist
+if [[ -f $HOME/.awskeys ]]; then
+	. $HOME/.awskeys
+fi
+
+# Source aliases if they exist
+if [[ -f $HOME/.aliases ]]; then
+	. $HOME/.aliases
+fi
+
 
 # Some docker helper functions
 # source ~/.docker-functions
