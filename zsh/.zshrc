@@ -112,7 +112,7 @@ export GOPATH=$HOME/Projects/go
 export PATH="$PATH:$GOPATH/bin"
 
 # Add Anaconda path
-export PATH="/Users/jearl/anaconda3/bin:$PATH"
+export PATH="/usr/local/anaconda3/bin:$PATH"
 
 # Source Amazon keys if they exist
 if [[ -f $HOME/.awskeys ]]; then

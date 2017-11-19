@@ -15,6 +15,7 @@ config_dir=${mydir}/../scripts
 
 configs=(
     aliases
+    git
     zsh
     iterm2
     istatmenus

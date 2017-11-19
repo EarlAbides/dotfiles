@@ -1,0 +1,28 @@
+#!/usr/bin/env zsh
+
+mydir=${(%):-%N}
+mydir=`dirname $mydir`
+dotfiles=`dirname $mydir`
+
+function setup_git {
+  name="Full Name"
+  echo "Enter Full Name for commits:"
+  vared name
+  git config --global user.name ${name}
+
+  email="user@example.com"
+  echo "Enter email for commits:"
+  vared email
+  git config --global user.email ${email}
+
+  git config --global --add merge.tool kdiff3
+  git config --global --add mergetool.kdiff3.path /usr/bin/kdiff3
+  git config --global --add mergetool.kdiff3.trustExitCode false
+  git config --global --add diff.guitool kdiff3
+  git config --global --add difftool.kdiff3.path /usr/bin/kdiff3
+  git config --global --add difftool.kdiff3.trustExitCode false
+  git config --global push.default simple
+}
+
+stow -R -d ${dotfiles} -t ~/ git
+setup_git
