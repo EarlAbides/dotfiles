@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+
+mydir=${(%):-%N}
+mydir=`dirname $mydir`
+dotfiles=`dirname $mydir`
+
+stow -R -d ${dotfiles} -t ~/ aliases

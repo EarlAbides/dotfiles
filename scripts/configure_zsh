@@ -1,0 +1,26 @@
+#!/usr/bin/env zsh
+
+# -----------------------------------------------------------------------------
+# "THE BEER-WARE LICENSE" (Revision 42):
+# <bonecrusher@covenofchaos.com>  wrote this file.  As long as  you retain this
+# notice you can do whatever you want with this stuff.  If we meet some day and
+# you think this stuff is worth it, you can buy me a beer in return.
+#  > BoneCrusher <
+# -----------------------------------------------------------------------------
+
+omzdir=~
+mydir=${(%):-%N}
+mydir=`dirname $mydir`
+dotfiles=`dirname $mydir`
+
+function setup_ohmyzsh {
+  destination="${1}"
+  if [[ ! -d "${destination}/.oh-my-zsh" ]]; then
+  	(cd "${destination}" && git clone https://github.com/robbyrussell/oh-my-zsh.git .oh-my-zsh)
+  else
+  	(cd "${destination}/.oh-my-zsh" && git pull origin master)
+  fi
+}
+
+setup_ohmyzsh ${omzdir}
+stow -R -d ${dotfiles} -t ~/ zsh
