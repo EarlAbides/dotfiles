@@ -76,6 +76,6 @@ for a in connList:
     ''' % a[2]
 
     appleScript = subprocess.Popen(['osascript'], stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    appleScript.communicate(script)
+    appleScript.communicate(script.encode())
 
 sys.exit()
