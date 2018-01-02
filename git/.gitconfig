@@ -44,12 +44,12 @@
 [merge]
 	tool = kdiff3
 [mergetool "kdiff3"]
-	path = /usr/bin/kdiff3
+	path = /usr/local/bin/kdiff3
 	trustExitCode = false
 [diff]
 	guitool = kdiff3
 [difftool "kdiff3"]
-	path = /usr/bin/kdiff3
+	path = /usr/local/bin/kdiff3
 	trustExitCode = false
 [push]
 	default = simple
