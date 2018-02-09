@@ -43,13 +43,17 @@
 	email = jeffreyearl@hotmail.com
 [merge]
 	tool = kdiff3
+	tool = kdiff3
 [mergetool "kdiff3"]
 	path = /usr/local/bin/kdiff3
 	trustExitCode = false
+	trustExitCode = false
 [diff]
+	guitool = kdiff3
 	guitool = kdiff3
 [difftool "kdiff3"]
 	path = /usr/local/bin/kdiff3
+	trustExitCode = false
 	trustExitCode = false
 [push]
 	default = simple
