@@ -1,4 +1,7 @@
 alias mercury="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/ansible-infrastructure:/mercury --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} devops/mercury"
+alias mercury-new="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/mercury:/mercury --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} devops/mercury-new"
+alias gemini="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/gemini:/gemini --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} devops/gemini"
+alias mercury-dev="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/ansible-infrastructure:/mercury --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} devops/mercury-dev"
 alias chef-repo="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/chef-repo:/chef-repo --env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} --env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} devops/chef-repo"
 alias rdp="~/dotfiles/utils/Connect-AwsEc2Rdp.py -e"
 alias ecr-login='eval $(aws ecr get-login --no-include-email --region us-east-1 )'
