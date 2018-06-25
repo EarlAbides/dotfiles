@@ -18,7 +18,7 @@ instanceRegion = []
 if arg.region:
     instanceRegion.append(arg.region)
 else:
-    instanceRegion = ['us-east-1','us-east-2']
+    instanceRegion = ['us-east-1','us-west-2']
 
 #Create a list of ALL Windows instance dictionaries
 windowsInstances = []
