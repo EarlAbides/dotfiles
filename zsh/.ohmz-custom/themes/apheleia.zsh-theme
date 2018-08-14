@@ -135,6 +135,7 @@ build_prompt() {
  
 # RPROMPT='$(ruby_prompt_info)'
 RPROMPT='$(prompt_project)'
- 
+
+kube_ps1
 PROMPT='%{%f%b%k%}$(build_prompt) 
-» '
+$(kube_ps1)» '

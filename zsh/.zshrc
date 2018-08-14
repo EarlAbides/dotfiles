@@ -62,13 +62,13 @@ ZSH_THEME="apheleia"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ruby)
+plugins=(git ruby kube-ps1 kubectl)
 
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
-export PATH=$PATH:$HOME/bin:/usr/local/bin
+export PATH=$HOME/bin:$PATH:/usr/local/bin
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
@@ -107,6 +107,9 @@ export PATH=$PATH:$HOME/bin:/usr/local/bin
 # export PATH=$HOME/.rbenv/bin:$PATH
 # eval "$(rbenv init -)"
 
+# Control kube_ps1 prompt
+export KUBE_PS1_NS_ENABLE=false
+
 # Set golang path
 export GOPATH=$HOME/Projects/go
 export PATH="$PATH:$GOPATH/bin"
@@ -124,6 +127,8 @@ if [[ -f $HOME/.aliases ]]; then
 	. $HOME/.aliases
 fi
 
+# Istio config
+export PATH="$PATH:/Users/jearl/Projects/kube/istio-1.0.0/bin"
 
 # Some docker helper functions
 # source ~/.docker-functions
