@@ -7,7 +7,7 @@ alias rdp="~/dotfiles/utils/Connect-AwsEc2Rdp.py -e"
 alias ecr-login='eval $(aws ecr get-login --no-include-email --region us-east-1 )'
 
 # kubectl helper
-envs=( Dev CI )
+envs=( Alpha Dev CI )
 kconf()
 {
     export KUBECONFIG=$KUBECONFIG:~/.kube/config-${1}-EksCluster
