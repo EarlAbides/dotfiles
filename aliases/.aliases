@@ -1,13 +1,10 @@
-alias mercury-old="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/ansible-infrastructure:/mercury --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/mercury-old"
-alias mercury="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/mercury:/mercury --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/mercury"
-alias gemini="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/gemini:/gemini --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/gemini"
-alias mercury-dev="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/ansible-infrastructure:/mercury --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/mercury-dev"
-alias chef-repo="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/mps-platform/chef-repo:/chef-repo --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/chef-repo"
+alias mercury="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/devops/mercury:/mercury --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/mercury"
+alias gemini="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/devops/gemini:/gemini --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/gemini"
 alias rdp="~/dotfiles/utils/Connect-AwsEc2Rdp.py -e"
 alias ecr-login='eval $(aws ecr get-login --no-include-email --region us-east-1 )'
 
 # kubectl helper
-envs=( Alpha Dev CI )
+envs=( Alpha Beta Dev CI QA )
 kconf()
 {
     export KUBECONFIG=$KUBECONFIG:~/.kube/config-${1}-EksCluster
