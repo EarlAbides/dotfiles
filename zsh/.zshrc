@@ -62,7 +62,7 @@ ZSH_THEME="apheleia"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git ruby kube-ps1 kubectl)
+plugins=(git ruby kubectl)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -107,15 +107,15 @@ export PATH=$HOME/bin:$PATH:/usr/local/bin
 # export PATH=$HOME/.rbenv/bin:$PATH
 # eval "$(rbenv init -)"
 
-# Control kube_ps1 prompt
-export KUBE_PS1_NS_ENABLE=false
-
 # Set golang path
 export GOPATH=$HOME/Projects/go
 export PATH="$PATH:$GOPATH/bin"
 
 # Add Anaconda path
 export PATH="/usr/local/anaconda3/bin:$PATH"
+
+# Java
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/amazon-corretto-8.jdk/Contents/Home
 
 # Source Amazon keys if they exist
 if [[ -f $HOME/.awskeys ]]; then
@@ -127,23 +127,16 @@ if [[ -f $HOME/.aliases ]]; then
 	. $HOME/.aliases
 fi
 
+# Source DDC aliases if they exist
+if [[ -f $HOME/.ddc_aliases ]]; then
+	. $HOME/.ddc_aliases
+fi
+
 # Istio config
-export PATH="$PATH:/Users/jearl/Projects/kube/istio-1.0.0/bin"
+# export PATH="$PATH:/Users/jearl/Projects/kube/istio-1.0.0/bin"
 
 # Some docker helper functions
 # source ~/.docker-functions
 
 # saysomething
 
-# eval "$(docker-machine env default)"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
-# tabtab source for serverless package
-# uninstall by removing these lines or running `tabtab uninstall serverless`
-[[ -f /Users/jearl/.nvm/versions/node/v9.6.1/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh ]] && . /Users/jearl/.nvm/versions/node/v9.6.1/lib/node_modules/serverless/node_modules/tabtab/.completions/serverless.zsh
-# tabtab source for sls package
-# uninstall by removing these lines or running `tabtab uninstall sls`
-[[ -f /Users/jearl/.nvm/versions/node/v9.6.1/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh ]] && . /Users/jearl/.nvm/versions/node/v9.6.1/lib/node_modules/serverless/node_modules/tabtab/.completions/sls.zsh

@@ -1,5 +1,6 @@
 alias mercury="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/devops/mercury:/mercury --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/mercury"
 alias gemini="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/devops/gemini:/gemini --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/gemini"
+alias ansible-playbook="docker run -it -v $(pwd):/ansible --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY jearl/ansible-playbook"
 alias rdp="~/dotfiles/utils/Connect-AwsEc2Rdp.py -e"
 alias ecr-login='eval $(aws ecr get-login --no-include-email --region us-east-1 )'
 
