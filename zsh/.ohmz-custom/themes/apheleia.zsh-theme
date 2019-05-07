@@ -124,6 +124,13 @@ prompt_project() {
 	fi
 }
  
+prompt_alks_account() {
+  if [[ ! -z "${ALKS_ACCOUNT}" ]]; then
+    echo -n "%{%F{cyan}%}(${ALKS_ACCOUNT})"
+  fi
+  echo -n "%{%f%}"
+}
+
 ## Main prompt
 build_prompt() {
   RETVAL=$?
@@ -141,4 +148,4 @@ RPROMPT='$(prompt_project)'
 #$(kube_ps1)» '
 
 PROMPT='%{%f%b%k%}$(build_prompt) 
-» '
+$(prompt_alks_account)» '

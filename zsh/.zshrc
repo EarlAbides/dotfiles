@@ -121,6 +121,7 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/amazon-corretto-8.jdk/Content
 if [[ -f $HOME/.awskeys ]]; then
 	. $HOME/.awskeys
 fi
+export AWS_DEFAULT_REGION=us-west-2
 
 # Source aliases if they exist
 if [[ -f $HOME/.aliases ]]; then
@@ -140,3 +141,4 @@ fi
 
 # saysomething
 
+export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
