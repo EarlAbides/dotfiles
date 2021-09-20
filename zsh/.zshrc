@@ -128,11 +128,6 @@ if [[ -f $HOME/.aliases ]]; then
 	. $HOME/.aliases
 fi
 
-# Source DDC aliases if they exist
-if [[ -f $HOME/.ddc_aliases ]]; then
-	. $HOME/.ddc_aliases
-fi
-
 # Istio config
 # export PATH="$PATH:/Users/jearl/Projects/kube/istio-1.0.0/bin"
 
@@ -142,3 +137,29 @@ fi
 # saysomething
 
 export PATH="/usr/local/opt/mysql@5.6/bin:$PATH"
+export PATH="/usr/local/opt/terraform@0.11/bin:$PATH"
+
+# Init direnv
+eval "$(direnv hook zsh)"
+
+export SKIP_PROFILE_AND_ALIASES='true'
+source ~/git/laptop-setup/config/global/profile
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
+
+export NVM_DIR="/Users/jearl/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+#export PATH="/usr/local/opt/maven@3.2/bin:$PATH"
+export PHANTOMJS_BIN=/usr/local/bin/phantomjs
+
+export PATH="$HOME/.tgenv/bin:$PATH"
+
+# Source DDC aliases if they exist
+if [[ -f $HOME/.ddc_aliases ]]; then
+	. $HOME/.ddc_aliases
+fi
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="/Users/jearl/.sdkman"
+[[ -s "/Users/jearl/.sdkman/bin/sdkman-init.sh" ]] && source "/Users/jearl/.sdkman/bin/sdkman-init.sh"

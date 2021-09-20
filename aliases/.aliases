@@ -2,34 +2,43 @@ alias mercury="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/
 alias gemini="docker run -it -v /var/run/docker.sock:/var/run/docker.sock -v ~/Projects/devops/gemini:/gemini --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY devops/gemini"
 alias ansible-playbook="docker run -it -v $(pwd):/ansible --env AWS_ACCESS_KEY_ID --env AWS_SECRET_ACCESS_KEY jearl/ansible-playbook"
 alias rdp="~/dotfiles/utils/Connect-AwsEc2Rdp.py -e"
-alias ecr-login='eval $(aws ecr get-login --no-include-email --region us-east-1 )'
+#alias ecr-login='eval $(aws ecr get-login --no-include-email --region us-east-1 )'
+alias pws="curl -s https://api.weather.com/v2/pws/observations/current\?stationId\=KVTJERIC36\&format\=json\&units\=e\&apiKey\=fdd8038208fc41a798038208fca1a78b | jq ."
+
+ecr-login()
+{
+    eval $(aws ecr get-login --no-include-email --region $1 )
+}
 
 # kubectl helper
-envs=( Alpha Beta Dev CI QA )
+envs=( default spinnaker vcda )
 kconf()
 {
-    export KUBECONFIG=$KUBECONFIG:~/.kube/config-${1}-EksCluster
+    export KUBECONFIG=$KUBECONFIG:~/.kube/${1}-config
 }
 
-export KUBECONFIG=
-for c in "${envs[@]}"
-do
-    kconf $c
-done
+export KUBECONFIG=~/.kube/config
+#export KUBECONFIG=
+#for c in "${envs[@]}"
+#do
+#    kconf $c
+#done
 
-kctl()
-{
-    env=$1 
-    shift
-    kubectl --cluster=${env}-EksCluster $@
-}
+#kctl()
+#{
+#    env=$1 
+#    shift
+#    kubectl --cluster=${env}-EksCluster $@
+#}
 
 kuse()
 {
-    kubectl config use-context ${1}
+    kubectl config use-context eks_${1}
 }
 
 # Markdown reader
 rmd () {
   pandoc $1 | lynx -stdin
 }
+
+

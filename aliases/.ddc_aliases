@@ -1,0 +1,149 @@
+export TF_VAR_domain_user=jearl@int.dealer.com
+export TF_VAR_infoblox_domain_user=jearl
+export F5_USER=jearl
+export HELM_HOST=:44134
+export RC_KEY_DIR=/etc/remoteconfig/
+alias tf='terraform'
+alias tfpw='read -s TF_VAR_domain_pass && export TF_VAR_domain_pass'
+alias f5pw='read -s F5_PASSWORD && export F5_PASSWORD'
+alias f5run='docker run -it -v $(pwd):/ansible --env F5_USER --env F5_PASSWORD dmkt-se/f5-config f5_config.yml'
+alias tgclean='find . -type d -name ".terragrunt-cache" -prune -exec rm -rf {} \;'
+alias ssm='aws ssm start-session --target'
+alias tstart='tiller -listen=localhost:44134 -storage=secret -logtostderr'
+alias dwpnp='aws-login awsdwpnp'
+alias dwp='aws-login awsdwp'
+alias dimnp='aws-login awsdimnp'
+alias dim='aws-login awsdim'
+alias invnp='aws-login awsddcinvnp'
+alias inv='aws-login awsddcinv'
+alias doinp='aws-login awsdoinp'
+alias doi='aws-login awsdoi'
+alias usejava7='export JAVA_HOME="$(/usr/libexec/java_home --version 1.7)"'
+alias usejava8='export JAVA_HOME="$(/usr/libexec/java_home --version 1.8)"'
+alias usejava11='export JAVA_HOME="$(/usr/libexec/java_home --version 11)"'
+alias tomcat='brew services start tomcat@7'
+alias dvs4=~/.local/bin/dvs4
+alias gvs-mvn-opts='export MAVEN_OPTS="-Xms256m -Xmx2048m -XX:PermSize=128m -XX:MaxPermSize=512m -Dtangosol.coherence.role=GlobalVehicleServices -DruntimeEnvironment=local -Dapp.name=GlobalVehicleServices -javaagent:/Users/jearl/git/build/lib/aspectjweaver-1.7.2.jar -javaagent:/Users/jearl/git/build/lib/spring-instrument-3.1.0.RELEASE.jar -Duser.timezone=GMT -Djava.naming.factory.initial=com.dealer.config.provider.jndi.DdcContextFactory -Djava.security.auth.login.config=/etc/remote_config/zookeeper_jaas.conf"'
+
+usejava11
+nvm use stable
+
+aws-login()
+{
+    account=$1
+    export ALKS_ACCOUNT=${account}
+
+    typeset -A available
+    available=( awsdwpnp "247721768464/ALKSAdmin" awsdwp "941071384133/ALKSAdmin" awsddcinvnp "451942341868/ALKSAdmin" awsddcinv "893800476825/ALKSAdmin" awsdpsnp "489430075229/ALKSAdmin" awsdps "249738108146/ALKSAdmin" awsdimnp "803429724514/ALKSAdmin" awsdim "833167883832/ALKSAdmin" awsdoinp "475961345904/ALKSAdmin" awsdoi "358352689286/ALKSAdmin")
+
+    alks_account=${available[$account]}
+
+    eval $(alks sessions open -i -f -o creds -a $alks_account)
+}
+
+ecs_mem()
+{
+    echo "Jenkins mem:   ${1}"
+    echo "Java max heap: ${2}G"
+    remaining=$(bc <<< "((1024 - 128) * $1) - (1024 * $2)")
+    echo "Remaining:     ${remaining}K"
+}
+
+cvw()
+{
+    curl -v https://vcda.us-west-2.inv.dealer.com$1 | jq .
+}
+
+cve()
+{
+    curl -v https://vcda.us-east-1.inv.dealer.com$1 | jq .
+}
+
+ssm-east()
+{
+    PARAMS='{"workingDirectory":[""],"executionTimeout":["3600"],"commands":["/etc/ddc/get-price.sh '
+    PARAMS+="${1} ${2}"
+    PARAMS+='"]}'
+    aws ssm send-command \
+        --document-name "AWS-RunShellScript" \
+        --document-version "1" \
+        --targets '[{"Key":"tag:aws:autoscaling:groupName","Values":["vcda-endpoint-service-nginx-asg"]}]' \
+        --parameters ${PARAMS} \
+        --timeout-seconds 600 \
+        --max-concurrency "1" \
+        --max-errors "0" \
+        --comment "Get price contexts" \
+        --region us-east-1
+}
+
+ssm-west()
+{
+    PARAMS='{"workingDirectory":[""],"executionTimeout":["3600"],"commands":["/etc/ddc/get-price.sh '
+    PARAMS+="${1} ${2}"
+    PARAMS+='"]}'
+aws ssm send-command \
+    --document-name "AWS-RunShellScript" \
+    --document-version "1" \
+    --targets '[{"Key":"tag:aws:autoscaling:groupName","Values":["vcda-endpoint-service-nginx-asg"]}]' \
+    --parameters ${PARAMS} \
+    --timeout-seconds 600 \
+    --max-concurrency "1" \
+    --max-errors "0" \
+    --comment "Get price contexts" \
+    --region us-west-2
+}
+
+local-price()
+{
+curl "http://localhost:5000/vehicles/price/?api_key=dxvaw9qyr9ajesakhb5jpe9j&uuid=${1}&associatedAccountId=${2}&type=DPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .content[].priceContexts[].contexts[]
+}
+
+price-contexts-west-nonprod()
+{
+curl "https://vcda-price-services-nonprod.us-west-2.inv-np.dealer.com/vehicles/price/?api_key=dxvaw9qyr9ajesakhb5jpe9&uuid=${1}&associatedAccountId=${2}&type=DPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .content[].priceContexts[].contexts[]
+}
+
+price-contexts-east()
+{
+curl "https://vcda-price-services-prod.us-east-1.inv.dealer.com/vehicles/price/?api_key=79g7tuy6tft7fhhjdkhm36dg&uuid=${1}&associatedAccountId=${2}&type=DPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .content[].priceContexts[].contexts[]
+}
+
+price-contexts-west()
+{
+curl "https://vcda-price-services-prod.us-west-2.inv.dealer.com/vehicles/price/?api_key=79g7tuy6tft7fhhjdkhm36dg&uuid=${1}&associatedAccountId=${2}&type=DPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .content[].priceContexts[].contexts[]
+}
+
+price-contexts-east-cached()
+{
+curl "https://vcda.us-east-1.inv.dealer.com/vehicles/price/?api_key=79g7tuy6tft7fhhjdkhm36dg&uuid=${1}&associatedAccountId=${2}&type=DPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .content[].priceContexts[].contexts[]
+}
+
+price-contexts-west-cached()
+{
+curl "https://vcda.us-west-2.inv.dealer.com/vehicles/price/?api_key=79g7tuy6tft7fhhjdkhm36dg&uuid=${1}&associatedAccountId=${2}&type=DPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .content[].priceContexts[].contexts[]
+}
+
+vehicle-price()
+{
+    curl "https://vcda.us-west-2.inv.dealer.com/vehicles/price/?api_key=79g7tuy6tft7fhhjdkhm36dg&uuid=${2}&associatedAccountId=${1}&type=DPRICE&type=EPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .
+}
+vehicle-eprice()
+{
+    curl "https://vcda.us-west-2.inv.dealer.com/vehicles/price/?api_key=79g7tuy6tft7fhhjdkhm36dg&uuid=${2}&associatedAccountId=${1}&type=EPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .
+}
+vehicle-dprice()
+{
+    curl "https://vcda.us-west-2.inv.dealer.com/vehicles/price/?api_key=79g7tuy6tft7fhhjdkhm36dg&uuid=${2}&associatedAccountId=${1}&type=DPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .
+}
+vehicle-price-np()
+{
+    curl "https://vcda.us-west-2.inv-np.dealer.com/vehicles/price/?api_key=dxvaw9qyr9ajesakhb5jpe9j&uuid=${2}&associatedAccountId=${1}&type=DPRICE&type=EPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .
+}
+vehicle-eprice-np()
+{
+    curl "https://vcda.us-west-2.inv-np.dealer.com/vehicles/price/?api_key=dxvaw9qyr9ajesakhb5jpe9j&uuid=${2}&associatedAccountId=${1}&type=EPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .
+}
+vehicle-dprice-np()
+{
+    curl "https://vcda.us-west-2.inv-np.dealer.com/vehicles/price/?api_key=dxvaw9qyr9ajesakhb5jpe9j&uuid=${2}&associatedAccountId=${1}&type=DPRICE&select=price&select=stackedPrice&select=conditionalStackedPrice&select=status&select=priceContexts&select=labels&select=priceType&select=retailPrice" | jq .
+}
